@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'channel.dart';
+import 'EventChannPage.dart';
 
 void main() {
   runApp(MainPage());
@@ -24,7 +26,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _MyAppState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,29 +35,42 @@ class _MyAppState extends State<HomePage> {
         ),
         body: Center(
             child: Column(children: [
-              FlatButton(
-                onPressed: () async {
-                  var futureValue = await SayHello.hello('李梦珂');
-                  return showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        content: Text(
-                          futureValue,
-                          textAlign: TextAlign.center,
-                        ),
-                      );
-                    },
+          FlatButton(
+            onPressed: () async {
+              var futureValue = await SayHello.hello('李梦珂');
+              return showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    content: Text(
+                      futureValue,
+                      textAlign: TextAlign.center,
+                    ),
                   );
                 },
-                child: Text(
-                  'sayHello',
-                  style: TextStyle(fontSize: 12.0),
-                ),
-                color: Colors.red,
-                textColor: Colors.white,
-              )
-            ])),
+              );
+            },
+            child: Text(
+              'sayHello',
+              style: TextStyle(fontSize: 12.0),
+            ),
+            color: Colors.red,
+            textColor: Colors.white,
+          ),
+          FlatButton(
+            onPressed: () async {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return EventChannelPage();
+              }));
+            },
+            child: Text(
+              'EventChannel',
+              style: TextStyle(fontSize: 12.0),
+            ),
+            color: Colors.red,
+            textColor: Colors.white,
+          )
+        ])),
       ),
     );
   }
