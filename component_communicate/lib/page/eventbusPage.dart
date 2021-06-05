@@ -22,14 +22,12 @@ class EventBusPage extends StatelessWidget {
   }
 }
 
-// 定义_WidgetOne，包含一个ValueNotifierData的实例。
 class _WidgetOne extends StatefulWidget {
   _WidgetOne({Key key}) : super(key: key);
   @override
   _WidgetOneState createState() => _WidgetOneState();
 }
 
-// _WidgetOneState中给ValueNotifierData实例添加监听。
 class _WidgetOneState extends State<_WidgetOne> {
   String eventBusInfo;
   @override

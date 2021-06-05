@@ -30,7 +30,7 @@ class InheritedContext extends InheritedWidget {
       @required Widget child})
       : super(key: key, child: child);
 
-  //变量
+  //变量（要共享的数据）
   final InheritedTestModel inheritedTestModel;
   final Function() increment;
   final Function() reduce;
@@ -42,9 +42,11 @@ class InheritedContext extends InheritedWidget {
     return contexts;
   }
 
-  //是否重建取决于Widget组件是否相同
+  //该回调决定当count发生变化时，是否通知子树中依赖count的Widget
   @override
   bool updateShouldNotify(InheritedContext oldWidget) {
+    //如果返回true，则子树中依赖(build函数中有调用)本widget
+    //的子widget的`state.didChangeDependencies`会被调用
     return inheritedTestModel != oldWidget.inheritedTestModel;
   }
 }
@@ -72,12 +74,18 @@ class TestWidgetB extends StatelessWidget {
       child: new RaisedButton(
           textColor: Colors.black,
           child: new Text('-'),
+          //使用InheritedWidget中的reduce方法
           onPressed: inheritedContext.reduce),
     );
   }
 }
 
-class TestWidgetC extends StatelessWidget {
+class TestWidgetC extends StatefulWidget {
+  @override
+  TestWidgetCState createState() => new TestWidgetCState();
+}
+
+class TestWidgetCState extends State<TestWidgetC> {
   @override
   Widget build(BuildContext context) {
     final inheritedContext = InheritedContext.of(context);
@@ -91,6 +99,14 @@ class TestWidgetC extends StatelessWidget {
         onPressed: () {},
       ),
     );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    //父或祖先widget中的InheritedWidget改变(updateShouldNotify返回true)时会被调用。
+    //如果build中没有依赖InheritedWidget，则此回调不会被调用。
+    print("Dependencies change");
   }
 }
 
@@ -147,17 +163,11 @@ class InheritedWidgetTestContainerState
               ),
             ),
             Text(
-              "业务开发中经常会碰到这样的情况，多个Widget需要同步同一份全局数据，比如点赞数、评论数、夜间模式等等",
+              "业务开发中经常会碰到这样的情况，多个Widget需要同步同一份全局数据，比如共享应用主题和当前语言环境信息",
             ),
             new TestWidgetA(),
             new TestWidgetB(),
             new TestWidgetC(),
-            new RaisedButton(
-                child: new Text('back'),
-                onPressed: () {
-                  // Navigate back to first screen when tapped!
-                  Navigator.pop(context);
-                })
           ],
         ),
       )),

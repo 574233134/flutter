@@ -27,7 +27,7 @@ class ParentWidgetState extends State<ParentWidget> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('组件化'),
+        title: new Text('Global key'),
       ),
       body: new Center(
         child: new Container(
@@ -69,6 +69,7 @@ class SubWidgetAState extends State<SubWidgetA> {
   Widget build(BuildContext context) {
     return new GestureDetector(
       onTap: () {
+        // 在A组件中通过key调用B组件改变颜色的方法
         subBkey.currentState.updateBackGroundColors(Colors.blue);
         setState(() {
           _backgroundColors = Colors.red;
@@ -106,6 +107,7 @@ class SubWidgetBState extends State<SubWidgetB> {
   Widget build(BuildContext context) {
     return new GestureDetector(
       onTap: () {
+        // 在B组件中通过key调用A组件改变颜色的方法
         subAkey.currentState.updateBackGroundColors(Colors.blue);
         setState(() {
           _backgroundColors = Colors.green;

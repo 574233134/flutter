@@ -1,9 +1,11 @@
+import 'package:component_communicate/page/ProviderPage.dart';
 import 'package:flutter/material.dart';
 import 'page/InheritedPage.dart';
 import 'page/blockPage.dart';
 import 'page/globalKeyPage.dart';
 import 'page/notifierPage.dart';
 import 'page/eventbusPage.dart';
+import 'page/ProviderPage.dart';
 
 void main() {
   runApp(MyApp());
@@ -86,6 +88,15 @@ class _MyHomePageState extends State<MyHomePage> {
               Navigator.push(
                 context,
                 new MaterialPageRoute(builder: (context) => new EventBusPage()),
+              );
+            },
+          ),
+          new RaisedButton(
+            child: new Text('Provider'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                new MaterialPageRoute(builder: (context) => new ProviderPage()),
               );
             },
           ),
